@@ -6,7 +6,7 @@
 /*   By: feedme <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 07:44:19 by feedme            #+#    #+#             */
-/*   Updated: 2019/04/29 18:38:34 by feedme           ###   ########.fr       */
+/*   Updated: 2019/05/05 12:53:54 by feedme           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,15 @@ char		*get_content(char *name, unsigned int *len, int fd)
 	char			*msg;
 	char			*tmp;
 	int				ret;
+	DIR				*dirp;
 
 	if ((fd = open(name, O_RDONLY)) < 0)
 		return (NULL);
-	if (fdopendir(fd))
+	if ((dirp = fdopendir(fd)))
+	{
 		ft_printf("%s is a directory, proceeding...\n\n", ft_strdup(name));
+		closedir(dirp);
+	}
 	ft_bzero(buf, 1024);
 	msg = ft_strnew(0);
 	while ((ret = read(fd, buf, 1024)) > 0)
